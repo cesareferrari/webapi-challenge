@@ -57,4 +57,22 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const {id} = req.params;
+    const project = await Projects.get(id);
+
+    if (project) {
+      const numberOfProjectsRemoved = await Projects.remove(id);
+      res.status(200).json({message: `Removed ${numberOfProjectsRemoved} projects`});
+    } else {
+      res.status(400).json({ message: `Error: Project with ID ${id} not found` });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Unable to perform the operation requested.", error });
+  }
+});
+
+
 module.exports = router;
