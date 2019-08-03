@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-
 router.get('/:id', async (req, res) => {
   try {
     const {id} = req.params;
@@ -23,8 +22,24 @@ router.get('/:id', async (req, res) => {
       res.status(404).json({message: "Project not found."});
     }
   } catch (error) {
-    res.status(500).json({message: "Unable to perform the operation requested."})
+    res.status(500).json({ message: "Unable to perform the operation requested.", error });
   }
 });
+
+router.post('/', async (req, res) => {
+  try {
+    const newProject = req.body;
+
+    if (newProject.name && newProject.description) {
+      const project = await Projects.insert(req.body);
+      res.status(201).json(project);
+    } else {
+      res.status(400).json({ message: "Error: Project name and description are required." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Unable to perform the operation requested.", error });
+  }
+})
 
 module.exports = router;
