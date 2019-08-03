@@ -11,4 +11,20 @@ router.get('/', async (req, res) => {
   }
 });
 
+
+router.get('/:id', async (req, res) => {
+  try {
+    const {id} = req.params;
+    const project = await Projects.get(id);
+
+    if (project) {
+      res.status(200).json(project);
+    } else {
+      res.status(404).json({message: "Project not found."});
+    }
+  } catch (error) {
+    res.status(500).json({message: "Unable to perform the operation requested."})
+  }
+});
+
 module.exports = router;
