@@ -28,11 +28,11 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const newProject = req.body;
+    const project = req.body;
 
-    if (newProject.name && newProject.description) {
-      const project = await Projects.insert(req.body);
-      res.status(201).json(project);
+    if (project.name && project.description) {
+      const newProject = await Projects.insert(req.body);
+      res.status(201).json(newProject);
     } else {
       res.status(400).json({ message: "Error: Project name and description are required." });
     }
