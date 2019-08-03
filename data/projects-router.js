@@ -37,9 +37,24 @@ router.post('/', async (req, res) => {
       res.status(400).json({ message: "Error: Project name and description are required." });
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Unable to perform the operation requested.", error });
   }
-})
+});
+
+router.put('/:id', async (req, res) => {
+  try {
+    const {id} = req.params;
+    const project = req.body;
+
+    if (project.name && project.description) {
+      const updatedProject = await Projects.update(id, project);
+      res.status(200).json(updatedProject);
+    } else {
+      res.status(400).json({ message: "Error: Project name and description are required." });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Unable to perform the operation requested.", error });
+  }
+});
 
 module.exports = router;
