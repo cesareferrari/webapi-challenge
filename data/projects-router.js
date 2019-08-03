@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Projects = require('./helpers/projectModel.js');
+const Actions = require('./helpers/actionModel.js');
 
 router.get('/', async (req, res) => {
   try {
@@ -71,6 +72,51 @@ router.delete('/:id', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Unable to perform the operation requested.", error });
+  }
+});
+
+router.get('/:id/actions', async (req, res) => {
+  try {
+    const {id} = req.params;
+    const project = await Projects.get(id);
+
+    if (project) {
+      const actions = await Projects.getProjectActions(id);
+
+      if (actions.length > 0) {
+        res.status(200).json(actions);
+      } else {
+        // probably status number is not correct
+        res.status(200).json({message: "This project has no actions."});
+      }
+    } else {
+      res.status(400).json({ message: `Error: Project with ID ${id} not found` });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Unable to perform the operation requested.", error });
+  }
+});
+
+router.post('/:id/actions', async (req, res) => {
+  const {id} = req.params;
+  const project = await Projects.get(id);
+
+  if (project) {
+    const newAction = { ...req.body, project_id: req.params.id };
+
+    try {
+      if (newAction.description) {
+        const action = await Actions.insert(newAction);
+        res.status(201).json(action);
+      } else {
+        // status number probably not right
+        res.status(400).json({ message: "Error: Description is required." });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Unable to perform the operation requested.", error });
+    }
+  } else {
+    res.status(400).json({ message: `Error: Project with ID ${id} not found` });
   }
 });
 
