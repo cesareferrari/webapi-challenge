@@ -86,8 +86,7 @@ router.get('/:id/actions', async (req, res) => {
       if (actions.length > 0) {
         res.status(200).json(actions);
       } else {
-        // probably status number is not correct
-        res.status(200).json({message: "This project has no actions."});
+        res.status(404).json({message: "This project has no actions."});
       }
     } else {
       res.status(400).json({ message: `Error: Project with ID ${id} not found` });
@@ -109,7 +108,6 @@ router.post('/:id/actions', async (req, res) => {
         const action = await Actions.insert(newAction);
         res.status(201).json(action);
       } else {
-        // status number probably not right
         res.status(400).json({ message: "Error: Description is required." });
       }
     } catch (error) {
