@@ -26,13 +26,29 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+    Router and Middleware
+
 - [ ] Describe Middleware?
+
+    Middleware is like an array of functions that get executed in the order they are
+    listed, one after the other and pass the execution to the next function.
+
+    Middleware can be built-in, third party or custom.
 
 - [ ] Describe a Resource?
 
+    A resource in the context of a web API is the object that we work on. For
+    example, a resource can represent a User. A User can have a name property and an
+    age property.  We can create a User, or modify it or delete it. We can create a
+    collection of User resources and access them through an API endpoint.
+
 - [ ] What can the API return to help clients know if a request was successful?
+ 
+    A status code of 200, which means OK.
 
 - [ ] How can we partition our application into sub-applications?
+
+    We can use Express Router to partition our application.
 
 ## Project Setup
 
